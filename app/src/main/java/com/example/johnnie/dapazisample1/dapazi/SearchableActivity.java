@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.johnnie.dapazisample1.R;
 import com.example.johnnie.dapazisample1.map.MapFragment;
+import com.example.johnnie.dapazisample1.model.DealModel;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
  */
 public class SearchableActivity extends AppCompatActivity implements MapFragment.Callbacks {
 
-
+    
     private EditText categoryTextView;
     private MapFragment mapFragment;
 
@@ -57,7 +58,9 @@ public class SearchableActivity extends AppCompatActivity implements MapFragment
                     String searchString = textView.getText().toString();
 
                     mapFragment.markersFresh();
-                    mapFragment.geoLocate(searchString);
+                    DealModel temModel = new DealModel();
+                    temModel.setAddress(searchString);
+                    mapFragment.geoLocate(temModel);
                     if(getCurrentFocus()!=null) {
                         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                         inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);

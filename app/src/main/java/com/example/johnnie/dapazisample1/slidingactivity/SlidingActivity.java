@@ -17,11 +17,13 @@
 package com.example.johnnie.dapazisample1.slidingactivity;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -40,6 +42,15 @@ public class SlidingActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sliding);
+
+        Intent intentExtras = getIntent();
+        Bundle extraBundle = intentExtras.getExtras();
+        if(extraBundle.containsKey("message")){
+            String message = extraBundle.getString("message");
+            String[] messages = message.split("_");
+            Log.d("BUNDLE",messages[0]);
+        }
+
 
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();

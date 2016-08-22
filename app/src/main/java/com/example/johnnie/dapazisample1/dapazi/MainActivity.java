@@ -29,8 +29,10 @@ import com.example.johnnie.dapazisample1.R;
 import com.example.johnnie.dapazisample1.list.MyListFragment;
 import com.example.johnnie.dapazisample1.localdatabase.AutoDealersDbAdapter;
 import com.example.johnnie.dapazisample1.map.MapFragment;
+import com.example.johnnie.dapazisample1.model.DealModel;
 
 import java.io.IOException;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity
@@ -67,8 +69,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-//        git changed test
-//        SupportMapFragment mapFragment = MapFragment.newInstance();
+
         mapFragment = MapFragment.newInstance();
         listFragment = new MyListFragment();
         getSupportFragmentManager().beginTransaction()
@@ -85,8 +86,10 @@ public class MainActivity extends AppCompatActivity
 
         dbHelper = new AutoDealersDbAdapter(this);
         dbHelper.open();
-        dbHelper.deleteAllDealers();
-        dbHelper.insertSomeDealers();
+        List<DealModel> models = dbHelper.fetchAllDealers();
+        if(models.size() ==0){
+            dbHelper.insertSomeDealers();
+        }
 
         ImageButton bmwButton = (ImageButton) findViewById(R.id.bmwButton);
         bmwButton.setOnClickListener(new View.OnClickListener() {
@@ -125,34 +128,27 @@ public class MainActivity extends AppCompatActivity
     public void goToResultsLocationByName(View v, String name){
 
 
-       new AsyncTask<String,Void,Cursor>(){
+       new AsyncTask<String,Void,List<DealModel>>(){
 
            @Override
-           protected Cursor doInBackground(String... name) {
+           protected List<DealModel> doInBackground(String... name) {
                return dbHelper.fetchDealersByName(name[0]);
 
            }
 
            @Override
-           public void onPostExecute(Cursor cursor){
+           public void onPostExecute(List<DealModel> models){
                if(isMapFragment) {
-                   cursor.moveToFirst();
-                   Log.d("CURSOR COUNT", Integer.valueOf(cursor.getCount()).toString());
-                   // Looper.prepare();
-                   while (!cursor.isAfterLast()) {
-                       String address = cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.KEY_ADDRESS));
+                   for (DealModel model: models){
                        try {
-                           Log.d("ADDRESS", address);
-                           mapFragment.geoLocate(address);
+                           Log.d("ADDRESS", model.getAddress());
+                           mapFragment.geoLocate(model);
                        } catch (IOException e) {
                            e.printStackTrace();
                        }
-                       Log.d("CURSOR POSITION", Integer.valueOf(cursor.getPosition()).toString());
-                       cursor.moveToNext();
                    }
-                   cursor.close();
                }else {
-                   listFragment.displayListView(cursor);
+                   listFragment.displayListView(models);
                }
            }
        }.execute(name);

@@ -9,11 +9,15 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import com.example.johnnie.dapazisample1.R;
 import com.example.johnnie.dapazisample1.localdatabase.AutoDealersDbAdapter;
+import com.example.johnnie.dapazisample1.model.DealModel;
+
+import java.util.List;
 
 /**
  * Created by Johnnie on 2016-08-17.
@@ -85,32 +89,27 @@ public class MyListFragment extends Fragment {
 
 
 
-    public void displayListView(Cursor cursor){
+    public void displayListView(List<DealModel> models){
 
-        // The desired columns to be bound
-        String[] columns = new String[] {
-                AutoDealersDbAdapter.KEY_ROWID,
-                AutoDealersDbAdapter.KEY_NAME,
-                AutoDealersDbAdapter.KEY_ADDRESS,
-                AutoDealersDbAdapter.KEY_FQ
-        };
-
-        // the XML defined views which the data will be bound to
-        int[] to = new int[] {
-                R.id.list_id,
-                R.id.list_name,
-                R.id.list_address,
-                R.id.list_call,
-        };
+//        // The desired columns to be bound
+//        String[] columns = new String[] {
+//                AutoDealersDbAdapter.KEY_ROWID,
+//                AutoDealersDbAdapter.KEY_NAME,
+//                AutoDealersDbAdapter.KEY_ADDRESS,
+//                AutoDealersDbAdapter.KEY_FQ
+//        };
+//
+//        // the XML defined views which the data will be bound to
+//        int[] to = new int[] {
+//                R.id.list_id,
+//                R.id.list_name,
+//                R.id.list_address,
+//                R.id.list_call,
+//        };
 
         // create the adapter using the cursor pointing to the desired data
         //as well as the layout information
-        SimpleCursorAdapter dataAdapter = new SimpleCursorAdapter(
-               getActivity(), R.layout.list_item,
-                cursor,
-                columns,
-                to,
-                0);
+        ArrayAdapter<DealModel> dataAdapter = new ArrayAdapter<DealModel>(getActivity(),android.R.layout.simple_list_item_1,models);
 
         ListView listView = (ListView) rootView.findViewById(R.id.list_items);
         // Assign adapter to ListView

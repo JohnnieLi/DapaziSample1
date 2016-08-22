@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.johnnie.dapazisample1.R;
+import com.example.johnnie.dapazisample1.model.DealModel;
 import com.example.johnnie.dapazisample1.slidingactivity.SlidingActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -123,9 +124,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 //        loadPermissions(Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_FINE_LOCATION);
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-        }
+
 
         mLocationClient = new GoogleApiClient.Builder(getActivity())
                 .addApi(LocationServices.API)
@@ -134,6 +133,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                 .build();
         mLocationClient.connect();
         gotoLocation(SEATTLE_LAT, SEATTLE_LNG, 15);
+
 
         if (mMap != null){
             mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -149,25 +149,29 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                     TextView tvLat = (TextView) v.findViewById(R.id.tvLat);
                     TextView tvLng = (TextView) v.findViewById(R.id.tvLng);
                     TextView tvSnippet = (TextView) v.findViewById(R.id.tvSnippet);
+                    final String[] messages = marker.getTitle().split("_");
 
-                    LatLng latLng = marker.getPosition();
-                    tvLocality.setText(marker.getTitle());
-                    tvLat.setText("Latitude: "+latLng.latitude);
-                    tvLng.setText("longitude: "+latLng.longitude);
+                    tvLocality.setText(messages[4]);
                     tvSnippet.setText(marker.getSnippet());
                     return v;
                 }
             });
 
+
             mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
-                    //Toast.makeText(MainActivity.this, "clicked", Toast.LENGTH_SHORT).show();
-                    //go(ItemListActivity.class);<color name="theme_light">#F48FB1</color>
                     Intent intent = new Intent(getActivity(), SlidingActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("message",marker.getTitle());
+                    intent.putExtras(bundle);
                     startActivity(intent);
                 }
             });
+        }
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
         }
     }
 
@@ -214,12 +218,12 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
 
 
-    public void geoLocate(String searchString) throws IOException {
+    public void geoLocate(DealModel model) throws IOException {
 
 
         //TextView textView = (TextView) getActivity().findViewById(R.id.ToGo_text);
         //String searchString = textView.getText().toString();
-
+        String searchString = model.getAddress();
         Geocoder gc = new Geocoder(getActivity());
         List<Address> list = gc.getFromLocationName(searchString, 1);
 
@@ -229,7 +233,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
             //Toast.makeText(getActivity(), "Found" + locality, Toast.LENGTH_SHORT).show();
             double lat = address.getLatitude();
             double lng = address.getLongitude();
-            addMarker(address, lat, lng);
+            addMarker(model,lat,lng);
 
 
             if(markers.size()<=1){
@@ -242,18 +246,24 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
     }
 
-    private void addMarker(Address add , double lat, double lng){
+    private void addMarker(DealModel model,double lat, double lng){
 
+        String title = model.getAddress()
+                + "_"+ Long.toString(model.getDealId())
+                +"_" + model.getCategory()
+                +"_" + model.getName()
+                +"_" + model.getInformation()
+                +"_" + model.getFAQ();
         MarkerOptions options = new MarkerOptions()
-                .title(add.getLocality())
-                .position(new LatLng(lat,lng))
-                        //       .icon(BitmapDescriptorFactory.fromResource(R.drawable.cast_ic_notification_0);
+                .title(title)
+                .position(new LatLng(lat, lng))
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 
-        String country = add.getCountryName();
-        if(country.length() >0){
-            options.snippet(country);
+        String address = model.getAddress();
+        if(address.length() >0){
+            options.snippet(address);
         }
+
         marker = mMap.addMarker(options);
         markers.add(marker);
     }
