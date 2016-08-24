@@ -1,21 +1,16 @@
 package com.example.johnnie.dapazisample1.list;
 
 import android.app.Activity;
-import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 import com.example.johnnie.dapazisample1.R;
-import com.example.johnnie.dapazisample1.localdatabase.AutoDealersDbAdapter;
-import com.example.johnnie.dapazisample1.model.DealModel;
+import com.example.johnnie.dapazisample1.model.DealerModel;
 
 import java.util.List;
 
@@ -31,7 +26,7 @@ public class MyListFragment extends Fragment {
 
 
     public interface OnListItemClicked {
-        public void onListItemClicked();
+         void onListItemClicked();
     }
 
 
@@ -89,7 +84,7 @@ public class MyListFragment extends Fragment {
 
 
 
-    public void displayListView(List<DealModel> models){
+    public void displayListView(List<DealerModel> models){
 
 //        // The desired columns to be bound
 //        String[] columns = new String[] {
@@ -109,7 +104,7 @@ public class MyListFragment extends Fragment {
 
         // create the adapter using the cursor pointing to the desired data
         //as well as the layout information
-        ArrayAdapter<DealModel> dataAdapter = new ArrayAdapter<DealModel>(getActivity(),android.R.layout.simple_list_item_1,models);
+        ArrayAdapter<DealerModel> dataAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,models);
 
         ListView listView = (ListView) rootView.findViewById(R.id.list_items);
         // Assign adapter to ListView

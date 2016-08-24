@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dealers>
+
+    <!--   ++++++++++bmw dealers+++++++++++++  -->
+    <dealer>
+        <address> 835 Carling Ave,Ottawa </address>
+        <category>dealer</category>
+        <name>bmw</name>
+        <information>Otto's BMW</information>
+        <faq>844-267-4826</faq>
+    </dealer>
+
+
+    <dealer>
+        <address> 1040 Ogilvie Rd, Gloucester, ON K1J 7T3 </address>
+        <category>dealer</category>
+        <name>bmw</name>
+        <information>Elite BMW</information>
+        <faq>844-267-4826</faq>
+    </dealer>
+
+
+
+    <!-- +++++++++++Audi Dealers++++++++++++++++++++ -->
+    <dealer>
+        <address> 295 West Hunt Club Rd,Ottawa </address>
+        <category>dealer</category>
+        <name>audi</name>
+        <information>Mark Motors of Ottawa</information>
+        <faq>(613) 723-1221</faq>
+    </dealer>
+
+    <dealer>
+        <address> 458 Montreal Rd, Ottawa </address>
+        <category>dealer</category>
+        <name>audi</name>
+        <information>Mark Motors of Ottawa</information>
+        <faq>(613) 746-3533</faq>
+    </dealer>
+
+
+    <dealer>
+    <address> 611 Montreal Rd, Ottawa </address>
+    <category>dealer</category>
+    <name>audi</name>
+    <information>Mark Motors of Ottawa</information>
+    <faq>(613) 749-4275</faq>
+    </dealer>
+
+
+    <!-- +++++++++++++++Mercedes dealers++++++++++++++++++++ -->
+    <dealer>
+        <address> 400 Hunt Club Rd, ottawa </address>
+        <category>dealer</category>
+        <name>mercedes</name>
+        <information>Star Motors of Ottawa</information>
+        <faq>(613) 737-7827</faq>
+    </dealer>
+
+
+    <dealer>
+        <address> 1339 Boulevard la Vérendrye O, Gatineau, QC J8T 8K2 </address>
+        <category>dealer</category>
+        <name>mercedes</name>
+        <information>Mercedes-Benz Gatineau</information>
+        <faq>(613) 745-9000</faq>
+    </dealer>
+</dealers>
+
+
+
+
+
+
+
+

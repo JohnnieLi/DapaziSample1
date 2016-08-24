@@ -26,14 +26,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.johnnie.dapazisample1.R;
+import com.example.johnnie.dapazisample1.model.DealerModel;
 import com.example.johnnie.dapazisample1.ui.slidinglayout.SlidingTabLayout;
 
 
 public class SlidingTabsBasicFragment extends Fragment {
 
     static final String LOG_TAG = "SlidingTabsBasicFragment";
+    private DealerModel dealerModel;
 
     /**
      * A custom {@link ViewPager} title strip which looks much like Tabs present in Android v4.0 and
@@ -51,7 +54,7 @@ public class SlidingTabsBasicFragment extends Fragment {
     public interface  basicFragmentClickedListener{
 
         public void onBasicFragmentClicked();
-    };
+    }
 
 
 
@@ -120,6 +123,14 @@ public class SlidingTabsBasicFragment extends Fragment {
 
 
 
+    public void getDealerModel(DealerModel dealerModel){
+        this.dealerModel = dealerModel;
+    }
+
+
+
+
+
     // END_INCLUDE (fragment_onviewcreated)
 
     /**
@@ -129,14 +140,14 @@ public class SlidingTabsBasicFragment extends Fragment {
      * {@link SlidingTabLayout}.
      */
     class SamplePagerAdapter extends PagerAdapter {
-        final String[] TITLES = {"CATEGORIES", "HOME", "TOP SELLING", "TOP GAMES", "TOP GROSSING"};
+        final String[] TITLES = {"HOME", "Information", "Address", "FAQ"};
 
         /**
          * @return the number of pages to display
          */
         @Override
         public int getCount() {
-            return 5;
+            return 4;
         }
 
         /**
@@ -168,6 +179,9 @@ public class SlidingTabsBasicFragment extends Fragment {
          */
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
+
+           // Log.d("SLIDINGTABSBASIC", "instantiateItem position: "+Integer.toString(position));
+
             // Inflate a new layout from our resources
             View view = getActivity().getLayoutInflater().inflate(R.layout.item_sliding_pager,
                     container, false);
@@ -178,11 +192,48 @@ public class SlidingTabsBasicFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     mCallback.onBasicFragmentClicked();
-//                    Toast.makeText(getActivity(), "fragment clicked", Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(getActivity(), TransitionFirstActivity.class);
-//                    startActivity(intent);
                 }
             });
+
+           // "HOME", "Information", "Address", "FAQ"
+            TextView tvLabel = (TextView) view.findViewById(R.id.sliding_textView);
+            switch (position) {
+                case 0:
+                    tvLabel.setText(dealerModel.getName());
+                    tvLabel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                        }
+                    });
+                    break;
+                case 1:
+                    tvLabel.setText(dealerModel.getInformation());
+                    tvLabel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                        }
+                    });
+                    break;
+                case 2:
+                    tvLabel.setText(dealerModel.getAddress());
+                    tvLabel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //onOptionClickForgot.OnOptionClick();
+                        }
+                    });
+                    break;
+                case 3:
+                    tvLabel.setText(dealerModel.getFAQ());
+                    tvLabel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //onOptionClickForgot.OnOptionClick();
+                        }
+                    });
+                    break;
+            }
+
 
             container.addView(view);
 
@@ -197,9 +248,11 @@ public class SlidingTabsBasicFragment extends Fragment {
          */
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
+           // Log.i(LOG_TAG, "destroyItem position: "+Integer.toString(position));
             container.removeView((View) object);
-            Log.i(LOG_TAG, "position");
         }
 
     }
+
+
 }

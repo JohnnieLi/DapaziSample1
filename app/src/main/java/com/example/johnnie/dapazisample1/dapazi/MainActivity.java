@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -29,7 +28,8 @@ import com.example.johnnie.dapazisample1.R;
 import com.example.johnnie.dapazisample1.list.MyListFragment;
 import com.example.johnnie.dapazisample1.localdatabase.AutoDealersDbAdapter;
 import com.example.johnnie.dapazisample1.map.MapFragment;
-import com.example.johnnie.dapazisample1.model.DealModel;
+import com.example.johnnie.dapazisample1.model.DealerModel;
+import com.example.johnnie.dapazisample1.utils.DealersPullParser;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity
     private MyListFragment listFragment;
     private static final int REQUEST_FINE_LOCATION = 0;
     private boolean isMapFragment = true;
-    private String nameBundle;
+    private String nameBundle = " ";
 
 
     @Override
@@ -86,9 +86,9 @@ public class MainActivity extends AppCompatActivity
 
         dbHelper = new AutoDealersDbAdapter(this);
         dbHelper.open();
-        List<DealModel> models = dbHelper.fetchAllDealers();
+        List<DealerModel> models = dbHelper.fetchAllDealers();
         if(models.size() ==0){
-            dbHelper.insertSomeDealers();
+            createData();
         }
 
         ImageButton bmwButton = (ImageButton) findViewById(R.id.bmwButton);
@@ -128,18 +128,18 @@ public class MainActivity extends AppCompatActivity
     public void goToResultsLocationByName(View v, String name){
 
 
-       new AsyncTask<String,Void,List<DealModel>>(){
+       new AsyncTask<String,Void,List<DealerModel>>(){
 
            @Override
-           protected List<DealModel> doInBackground(String... name) {
+           protected List<DealerModel> doInBackground(String... name) {
                return dbHelper.fetchDealersByName(name[0]);
 
            }
 
            @Override
-           public void onPostExecute(List<DealModel> models){
+           public void onPostExecute(List<DealerModel> models){
                if(isMapFragment) {
-                   for (DealModel model: models){
+                   for (DealerModel model: models){
                        try {
                            Log.d("ADDRESS", model.getAddress());
                            mapFragment.geoLocate(model);
@@ -171,6 +171,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+
     }
 
     @Override
@@ -200,7 +201,7 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container_map,listFragment).commit();
                 isMapFragment = false;
-                goToResultsLocationByName(null,nameBundle);
+                goToResultsLocationByName(listFragment.getView(),nameBundle);
                 break;
             case R.id.action_mapView:
                 mapFragment.setArguments(getIntent().getExtras());
@@ -260,4 +261,21 @@ public class MainActivity extends AppCompatActivity
     public void onListItemClicked() {
 
     }
+
+    private void createData(){
+        DealersPullParser parser = new DealersPullParser();
+        List<DealerModel> dealers = parser.parseXML(this);
+
+        for( DealerModel dealer: dealers){
+            dbHelper.createDealer(dealer);
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        dbHelper.open();
+        Log.d("ONRESUME", "dbHelper re-opened");
+    }
+
 }

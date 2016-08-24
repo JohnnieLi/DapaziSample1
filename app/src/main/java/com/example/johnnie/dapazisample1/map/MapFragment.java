@@ -25,7 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.johnnie.dapazisample1.R;
-import com.example.johnnie.dapazisample1.model.DealModel;
+import com.example.johnnie.dapazisample1.model.DealerModel;
 import com.example.johnnie.dapazisample1.slidingactivity.SlidingActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -218,7 +218,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
 
 
-    public void geoLocate(DealModel model) throws IOException {
+    public void geoLocate(DealerModel model) throws IOException {
 
 
         //TextView textView = (TextView) getActivity().findViewById(R.id.ToGo_text);
@@ -246,8 +246,8 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
     }
 
-    private void addMarker(DealModel model,double lat, double lng){
-
+    private void addMarker(DealerModel model,double lat, double lng){
+     //Title:address,Id,category,name,info,faq
         String title = model.getAddress()
                 + "_"+ Long.toString(model.getDealId())
                 +"_" + model.getCategory()
@@ -371,5 +371,11 @@ public ArrayList<Marker> getMarkers(){
     public void onStop(){
         super.onStop();
         mLocationClient.disconnect();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
     }
 }

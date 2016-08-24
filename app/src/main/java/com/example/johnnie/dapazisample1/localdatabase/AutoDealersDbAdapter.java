@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.johnnie.dapazisample1.model.DealModel;
+import com.example.johnnie.dapazisample1.model.DealerModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +84,7 @@ public class AutoDealersDbAdapter {
         }
     }
 
-    public long createDealer(DealModel model) {
+    public long createDealer(DealerModel model) {
 
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_ADDRESS, model.getAddress());
@@ -111,7 +111,7 @@ public class AutoDealersDbAdapter {
 
     public boolean deleteAllDealers() {
 
-        int doneDelete = 0;
+        int doneDelete;
         doneDelete = mDb.delete(SQLITE_TABLE, null , null);
         Log.w(TAG, Integer.toString(doneDelete));
         return doneDelete > 0;
@@ -140,10 +140,10 @@ public class AutoDealersDbAdapter {
 //
 //    }
 
-    public List<DealModel> fetchDealersByName(String inputText) throws SQLException {
-        List<DealModel> models = new ArrayList<DealModel>();
+    public List<DealerModel> fetchDealersByName(String inputText) throws SQLException {
+        List<DealerModel> models = new ArrayList<>();
         Log.w(TAG, inputText);
-        Cursor mCursor = null;
+        Cursor mCursor;
         if (inputText == null  ||  inputText.length () == 0)  {
             mCursor = mDb.query(SQLITE_TABLE, new String[] {KEY_ROWID,
                             KEY_CATEGORY,KEY_ADDRESS, KEY_NAME, KEY_INFORMATION,KEY_FQ},
@@ -158,7 +158,7 @@ public class AutoDealersDbAdapter {
         }
         if (mCursor.getCount() > 0) {
             while(mCursor.moveToNext()){
-                DealModel model = new DealModel();
+                DealerModel model = new DealerModel();
                 model.setAddress(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_ADDRESS)));
                 model.setCategory(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_CATEGORY)));
                 model.setName(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_NAME)));
@@ -172,8 +172,8 @@ public class AutoDealersDbAdapter {
 
     }
 
-    public List<DealModel> fetchAllDealers() {
-        List<DealModel> models = new ArrayList<DealModel>();
+    public List<DealerModel> fetchAllDealers() {
+        List<DealerModel> models = new ArrayList<>();
 
         Cursor mCursor = mDb.query(SQLITE_TABLE, new String[] {KEY_ROWID,
                         KEY_CATEGORY,KEY_ADDRESS, KEY_NAME, KEY_INFORMATION,KEY_FQ},
@@ -182,7 +182,7 @@ public class AutoDealersDbAdapter {
 
         if (mCursor.getCount() > 0) {
             while(mCursor.moveToNext()){
-                DealModel model = new DealModel();
+                DealerModel model = new DealerModel();
                 model.setAddress(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_ADDRESS)));
                 model.setCategory(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_CATEGORY)));
                 model.setName(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_NAME)));
@@ -196,80 +196,46 @@ public class AutoDealersDbAdapter {
     }
 
 
-
-
-//    public Cursor fetchAllDealers() {
-//
-//        Cursor mCursor = mDb.query(SQLITE_TABLE, new String[] {KEY_ROWID,
-//                        KEY_CATEGORY,KEY_ADDRESS, KEY_NAME, KEY_INFORMATION,KEY_FQ},
-//                null, null, null, null, null);
-//
-//        if (mCursor != null) {
-//            mCursor.moveToFirst();
-//        }
-//        return mCursor;
-//    }
-
 //    public  void insertSomeDealers() {
-//        //KEY_CATEGORY,  KEY_NAME,   KEY_ADDRESS,   KEY_INFORMATION,   KEY_FQ
+//        DealerModel dealerModel = new DealerModel();
+//        dealerModel.setAddress("835 Carling Ave,Ottawa");
+//        dealerModel.setCategory("dealer");
+//        dealerModel.setName("bmw");
+//        dealerModel.setInformation("Otto's BMW");
+//        dealerModel.setFAQ("844-267-4826");
+//        createDealer(dealerModel);
 //
-//        createDealer("dealer", "bmw", "835 Carling Ave,Ottawa", "Otto's BMW", "no question");
-//        createDealer("dealer", "bmw", "1040 Ogilvie Rd, Gloucester, ON K1J 7T3", "Elite BMW","844-267-4826");
+//        dealerModel = new DealerModel();
+//        dealerModel.setAddress("1040 Ogilvie Rd, Gloucester, ON K1J 7T3");
+//        dealerModel.setCategory("dealer");
+//        dealerModel.setName("bmw");
+//        dealerModel.setInformation("Elite BMW");
+//        dealerModel.setFAQ("844-267-4826");
+//        createDealer(dealerModel);
 //
-//        createDealer("dealer", "audi", "295 West Hunt Club Rd,Ottawa",
-//                "Mark Motors of Ottawa", "(613) 723-1221");
-//        createDealer("dealer", "audi", "458 Montreal Rd, Ottawa",
-//                "Mark Motors of Ottawa", "(613) 746-3533");
-//        createDealer("dealer", "audi", "611 Montreal Rd, Ottawa",
-//                "Mark Motors of Ottawa", "(613) 749-4275");
+//        dealerModel = new DealerModel();
+//        dealerModel.setAddress("295 West Hunt Club Rd,Ottawa");
+//        dealerModel.setCategory("dealer");
+//        dealerModel.setName("audi");
+//        dealerModel.setInformation("Mark Motors of Ottawa");
+//        dealerModel.setFAQ("(613) 723-1221");
+//        createDealer(dealerModel);
 //
-//        createDealer("dealer", "mercedes", "400 Hunt Club Rd, ottawa",
-//                "Star Motors of Ottawa", "(613) 737-7827");
-////        createDealer("dealer", "mercedes", "1110 St Laurent Blvd, Ottawa, ON K1K 4L8",
-////                "Ogilvie Motors Ltd | Mercedes-Benz Ogilvie Ottawa","(613) 745-9000");
-//        createDealer("dealer", "mercedes", "1339 Boulevard la Vérendrye O, Gatineau, QC J8T 8K2",
-//                "Mercedes-Benz Gatineau","(613) 745-9000");
-
-    public  void insertSomeDealers() {
-        DealModel dealModel = new DealModel();
-        dealModel.setAddress("835 Carling Ave,Ottawa");
-        dealModel.setCategory("dealer");
-        dealModel.setName("bmw");
-        dealModel.setInformation("Otto's BMW");
-        dealModel.setFAQ("844-267-4826");
-        createDealer(dealModel);
-
-        dealModel= new DealModel();
-        dealModel.setAddress("1040 Ogilvie Rd, Gloucester, ON K1J 7T3");
-        dealModel.setCategory("dealer");
-        dealModel.setName("bmw");
-        dealModel.setInformation("Elite BMW");
-        dealModel.setFAQ("844-267-4826");
-        createDealer(dealModel);
-
-        dealModel= new DealModel();
-        dealModel.setAddress("295 West Hunt Club Rd,Ottawa");
-        dealModel.setCategory("dealer");
-        dealModel.setName("audi");
-        dealModel.setInformation("Mark Motors of Ottawa");
-        dealModel.setFAQ("(613) 723-1221");
-        createDealer(dealModel);
-
-        dealModel= new DealModel();
-        dealModel.setAddress("1040 Ogilvie Rd, Gloucester, ON K1J 7T3");
-        dealModel.setCategory("dealer");
-        dealModel.setName("audi");
-        dealModel.setInformation("Mark Motors of Ottawa");
-        dealModel.setFAQ("(613) 746-3533");
-        createDealer(dealModel);
-
-        dealModel= new DealModel();
-        dealModel.setAddress("400 Hunt Club Rd, ottawa");
-        dealModel.setCategory("dealer");
-        dealModel.setName("mercedes");
-        dealModel.setInformation("Star Motors of Ottawa");
-        dealModel.setFAQ("(613) 737-7827");
-        createDealer(dealModel);
-    }
+//        dealerModel = new DealerModel();
+//        dealerModel.setAddress("1040 Ogilvie Rd, Gloucester, ON K1J 7T3");
+//        dealerModel.setCategory("dealer");
+//        dealerModel.setName("audi");
+//        dealerModel.setInformation("Mark Motors of Ottawa");
+//        dealerModel.setFAQ("(613) 746-3533");
+//        createDealer(dealerModel);
+//
+//        dealerModel = new DealerModel();
+//        dealerModel.setAddress("400 Hunt Club Rd, ottawa");
+//        dealerModel.setCategory("dealer");
+//        dealerModel.setName("mercedes");
+//        dealerModel.setInformation("Star Motors of Ottawa");
+//        dealerModel.setFAQ("(613) 737-7827");
+//        createDealer(dealerModel);
+//    }
 
 }

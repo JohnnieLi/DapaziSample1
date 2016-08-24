@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.johnnie.dapazisample1.R;
+import com.example.johnnie.dapazisample1.model.DealerModel;
 import com.example.johnnie.dapazisample1.slidingactivity.slidingFragment.SlidingTabsBasicFragment;
 
 
@@ -37,6 +38,7 @@ public class SlidingActivity extends ActionBarActivity
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private DealerModel dealerModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +50,24 @@ public class SlidingActivity extends ActionBarActivity
         if(extraBundle.containsKey("message")){
             String message = extraBundle.getString("message");
             String[] messages = message.split("_");
-            Log.d("BUNDLE",messages[0]);
+            dealerModel = new DealerModel();
+            //Messages[]:address,Id,category,name,info,faq
+            dealerModel.setAddress(messages[0]);
+            dealerModel.setDealId(new Long(messages[1]));
+            dealerModel.setCategory(messages[2]);
+            dealerModel.setName(messages[3]);
+            dealerModel.setInformation(messages[4]);
+            dealerModel.setFAQ(messages[5]);
+            Log.d("BUNDLE",dealerModel.getFAQ());
         }
 
 
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             SlidingTabsBasicFragment fragment = new SlidingTabsBasicFragment();
+            if(dealerModel != null){
+                fragment.getDealerModel(dealerModel);
+            }
             transaction.replace(R.id.sample_content_fragment, fragment);
             transaction.commit();
         }

@@ -3,7 +3,7 @@ package com.example.johnnie.dapazisample1.model;
 /**
  * Created by Johnnie on 2016-08-20.
  */
-public class DealModel {
+public class DealerModel {
 
     private long dealId;
     private String category;
@@ -61,5 +61,13 @@ public class DealModel {
 
     public void setFAQ(String FAQ) {
         this.FAQ = FAQ;
+    }
+
+    @Override
+    public String toString() {
+        return  name
+                +"\n"+information
+                +"\nAddress: "+address
+                +"\nCall: "+FAQ;
     }
 }

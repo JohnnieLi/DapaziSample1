@@ -11,17 +11,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.example.johnnie.dapazisample1.R;
 import com.example.johnnie.dapazisample1.map.MapFragment;
-import com.example.johnnie.dapazisample1.model.DealModel;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.Marker;
+import com.example.johnnie.dapazisample1.model.DealerModel;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by Johnnie on 2016-08-08.
@@ -55,15 +50,17 @@ public class SearchableActivity extends AppCompatActivity implements MapFragment
             public void onClick(View v) {
                 try {
                     TextView textView = (TextView) findViewById(R.id.ToGo_text);
-                    String searchString = textView.getText().toString();
+                    if(textView!=null) {
+                        String searchString = textView.getText().toString();
 
-                    mapFragment.markersFresh();
-                    DealModel temModel = new DealModel();
-                    temModel.setAddress(searchString);
-                    mapFragment.geoLocate(temModel);
-                    if(getCurrentFocus()!=null) {
-                        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                        mapFragment.markersFresh();
+                        DealerModel temModel = new DealerModel();
+                        temModel.setAddress(searchString);
+                        mapFragment.geoLocate(temModel);
+                        if (getCurrentFocus() != null) {
+                            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
