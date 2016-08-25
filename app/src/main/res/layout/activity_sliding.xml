@@ -34,7 +34,7 @@
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:name="com.example.johnnie.dapazisample1.slidingactivity.slidingFragment.NavigationFragment"/>
+            android:name="com.example.johnnie.ottawainfo.slidingactivity.slidingFragment.NavigationFragment" />
 
     </android.support.v4.widget.DrawerLayout>
 
