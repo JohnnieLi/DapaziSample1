@@ -5,7 +5,7 @@
     android:background="#FFF"
     android:orientation="vertical">
 
-    <com.example.johnnie.dapazisample1.ui.slidinglayout.SlidingTabLayout
+    <com.example.johnnie.ottawainfo.ui.slidinglayout.SlidingTabLayout
         android:id="@+id/sliding_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
