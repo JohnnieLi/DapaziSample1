@@ -3,6 +3,8 @@ package com.example.johnnie.ottawainfo.list;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,10 @@ public class MyListFragment extends Fragment {
     int mCurrentPosition = -1;
     private View rootView;
     private  OnListItemClicked mCallbacks;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
 
 
     public interface OnListItemClicked {
@@ -86,11 +92,13 @@ public class MyListFragment extends Fragment {
 
     public void displayListView(List<DealerModel> models){
 
+        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerView_items);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
-        ArrayAdapter<DealerModel> dataAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,models);
+        mAdapter = new RecyclerListAdapter(models);
+        mRecyclerView.setAdapter(mAdapter);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.list_items);
-        // Assign adapter to ListView
-        listView.setAdapter(dataAdapter);
     }
 }

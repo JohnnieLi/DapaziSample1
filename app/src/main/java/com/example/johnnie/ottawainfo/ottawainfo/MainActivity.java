@@ -196,18 +196,22 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_settings:
                 return true;
             case R.id.action_listView:
-                listFragment.setArguments(getIntent().getExtras());
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container_map,listFragment).commit();
-                isMapFragment = false;
-                goToResultsLocationByName(listFragment.getView(),nameBundle);
+                if(isMapFragment) {
+                    listFragment.setArguments(getIntent().getExtras());
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container_map, listFragment).commit();
+                    isMapFragment = false;
+                    goToResultsLocationByName(listFragment.getView(), nameBundle);
+                }
                 break;
             case R.id.action_mapView:
-                mapFragment.setArguments(getIntent().getExtras());
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container_map,mapFragment).commit();
-                isMapFragment = true;
-                goToResultsLocationByName(mapFragment.getView(),nameBundle);
+                if(!isMapFragment) {
+                    mapFragment.setArguments(getIntent().getExtras());
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container_map, mapFragment).commit();
+                    isMapFragment = true;
+                    goToResultsLocationByName(mapFragment.getView(), nameBundle);
+                }
                 break;
         }
 

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/welcome_layout"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:theme="@style/AppTheme.NoActionBar"
-    tools:context="com.example.johnnie.ottawainfo.welcome.WelcomeActivity">
+    android:background="#0E86D3"
+    tools:context=".welcome.SplashScreen">
 
 
     <ImageView
@@ -13,7 +15,7 @@
         android:layout_height="match_parent"
         android:id="@+id/welcome_imageView"
         android:src="@drawable/welcome_splash"
-        android:background="#415bed"
+        android:background="#0E86D3"
         android:layout_alignParentStart="false"
         android:layout_gravity="center"
         android:layout_alignParentEnd="true" />

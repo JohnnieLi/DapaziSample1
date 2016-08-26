@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.0"
 
     defaultConfig {
-        applicationId "com.example.johnnie.dapazisample1"
+        applicationId "com.example.johnnie.ottawainfo"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
@@ -37,5 +37,7 @@ dependencies {
     compile 'com.google.maps.android:android-maps-utils:0.3.4'
 
     compile 'com.google.android.gms:play-services-maps:9.4.0'
+    compile 'com.android.support:cardview-v7:23.2.0'
+    compile 'com.android.support:recyclerview-v7:23.2.0'
     }
 
