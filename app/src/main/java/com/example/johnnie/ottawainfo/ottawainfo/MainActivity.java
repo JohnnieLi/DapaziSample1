@@ -20,7 +20,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.johnnie.ottawainfo.R;
@@ -29,6 +31,7 @@ import com.example.johnnie.ottawainfo.localdatabase.AutoDealersDbAdapter;
 import com.example.johnnie.ottawainfo.map.MapFragment;
 import com.example.johnnie.ottawainfo.model.DealerModel;
 import com.example.johnnie.ottawainfo.utils.DealersPullParser;
+import com.example.johnnie.ottawainfo.utils.SpinnerAdapter;
 
 import java.io.IOException;
 import java.util.List;
@@ -68,13 +71,14 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
+        //implement the map
         mapFragment = MapFragment.newInstance();
         listFragment = new MyListFragment();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container_map, mapFragment).commit();
 
 
+        // implement search area, including searchView and spinner
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) findViewById(R.id.search);
@@ -83,6 +87,48 @@ public class MainActivity extends AppCompatActivity
                     searchManager.getSearchableInfo(getComponentName()));
         }
 
+        final String[] spinnerTexts= {"Map","List"};
+        Integer[] spinnerImages ={R.drawable.spinner_map_icon, R.drawable.spinner_list_icon};
+        Spinner spinner = (Spinner)findViewById(R.id.spinnerView);
+        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(this,R.layout.spinner_value_layout,
+                spinnerTexts,spinnerImages);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    //map view
+                    case 0:
+                        if(!isMapFragment) {
+                            mapFragment.setArguments(getIntent().getExtras());
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragment_container_map, mapFragment).commit();
+                            isMapFragment = true;
+                            goToResultsLocationByName(mapFragment.getView(), nameBundle);
+                        }
+                        break;
+                    //list view
+                    case 1:
+                        if(isMapFragment) {
+                            listFragment.setArguments(getIntent().getExtras());
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragment_container_map, listFragment).commit();
+                            isMapFragment = false;
+                            goToResultsLocationByName(listFragment.getView(), nameBundle);
+                        }
+                        break;
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        // insert local data
         dbHelper = new AutoDealersDbAdapter(this);
         dbHelper.open();
         List<DealerModel> models = dbHelper.fetchAllDealers();
@@ -90,6 +136,9 @@ public class MainActivity extends AppCompatActivity
             createData();
         }
 
+
+
+        // set buttons
         ImageButton bmwButton = (ImageButton) findViewById(R.id.bmwButton);
         bmwButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,24 +244,7 @@ public class MainActivity extends AppCompatActivity
         switch (id){
             case R.id.action_settings:
                 return true;
-            case R.id.action_listView:
-                if(isMapFragment) {
-                    listFragment.setArguments(getIntent().getExtras());
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container_map, listFragment).commit();
-                    isMapFragment = false;
-                    goToResultsLocationByName(listFragment.getView(), nameBundle);
-                }
-                break;
-            case R.id.action_mapView:
-                if(!isMapFragment) {
-                    mapFragment.setArguments(getIntent().getExtras());
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container_map, mapFragment).commit();
-                    isMapFragment = true;
-                    goToResultsLocationByName(mapFragment.getView(), nameBundle);
-                }
-                break;
+
         }
 
 

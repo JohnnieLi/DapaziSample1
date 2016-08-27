@@ -20,4 +20,6 @@
     <string name="drawer_closed">Drawer Closed</string>
     <string name="action_listView">listView</string>
     <string name="action_mapView">mapView</string>
+
+    <string name="spinner_title">Select a model</string>
 </resources>
