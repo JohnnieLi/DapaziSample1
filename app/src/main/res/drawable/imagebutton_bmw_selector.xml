@@ -6,6 +6,6 @@
     <item android:state_focused="true"
         android:drawable="@drawable/imagebutton_bmw_black" /> <!-- focused -->
 
-        <item android:drawable="@drawable/imagebutton_bmw" /> <!-- default -->
+        <item android:drawable="@drawable/imagebotton_bmw" /> <!-- default -->
 </selector>
 

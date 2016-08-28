@@ -39,7 +39,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
         }
 
-
     }
 
     public RecyclerListAdapter(List<DealerModel> models) {

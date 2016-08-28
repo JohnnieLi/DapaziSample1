@@ -13,6 +13,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,7 +23,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -31,19 +32,22 @@ import com.example.johnnie.ottawainfo.localdatabase.AutoDealersDbAdapter;
 import com.example.johnnie.ottawainfo.map.MapFragment;
 import com.example.johnnie.ottawainfo.model.DealerModel;
 import com.example.johnnie.ottawainfo.utils.DealersPullParser;
+import com.example.johnnie.ottawainfo.utils.RecyclerButtonsAdpter;
 import com.example.johnnie.ottawainfo.utils.SpinnerAdapter;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,MapFragment.Callbacks,
-         MyListFragment.OnListItemClicked{
+        implements NavigationView.OnNavigationItemSelectedListener, MapFragment.Callbacks,
+        MyListFragment.OnListItemClicked {
 
 
     private AutoDealersDbAdapter dbHelper;
-    private  MapFragment mapFragment;
+    private MapFragment mapFragment;
     private MyListFragment listFragment;
     private static final int REQUEST_FINE_LOCATION = 0;
     private boolean isMapFragment = true;
@@ -53,9 +57,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         loadPermissions(Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_FINE_LOCATION);
+        setContentView(R.layout.activity_main);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -79,6 +83,18 @@ public class MainActivity extends AppCompatActivity
 
 
         // implement search area, including searchView and spinner
+        setSearchArea();
+
+        // insert local data
+        setLocalData();
+
+        // set buttons
+        setRecyclerViewButtons();
+
+    }
+
+    // implement search area, including searchView and spinner
+    private void setSearchArea() {
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) findViewById(R.id.search);
@@ -87,19 +103,19 @@ public class MainActivity extends AppCompatActivity
                     searchManager.getSearchableInfo(getComponentName()));
         }
 
-        final String[] spinnerTexts= {"Map","List"};
-        Integer[] spinnerImages ={R.drawable.spinner_map_icon, R.drawable.spinner_list_icon};
-        Spinner spinner = (Spinner)findViewById(R.id.spinnerView);
-        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(this,R.layout.spinner_value_layout,
-                spinnerTexts,spinnerImages);
+        final String[] spinnerTexts = {"Map", "List"};
+        Integer[] spinnerImages = {R.drawable.spinner_map_icon, R.drawable.spinner_list_icon};
+        Spinner spinner = (Spinner) findViewById(R.id.spinnerView);
+        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(this, R.layout.spinner_value_layout,
+                spinnerTexts, spinnerImages);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
+                switch (position) {
                     //map view
                     case 0:
-                        if(!isMapFragment) {
+                        if (!isMapFragment) {
                             mapFragment.setArguments(getIntent().getExtras());
                             getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.fragment_container_map, mapFragment).commit();
@@ -109,7 +125,7 @@ public class MainActivity extends AppCompatActivity
                         break;
                     //list view
                     case 1:
-                        if(isMapFragment) {
+                        if (isMapFragment) {
                             listFragment.setArguments(getIntent().getExtras());
                             getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.fragment_container_map, listFragment).commit();
@@ -126,87 +142,76 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+    }
 
 
-        // insert local data
+    //initialize database and load data
+    public void setLocalData() {
         dbHelper = new AutoDealersDbAdapter(this);
         dbHelper.open();
         List<DealerModel> models = dbHelper.fetchAllDealers();
-        if(models.size() ==0){
+        if (models.size() == 0) {
             createData();
         }
+    }
 
-
-
-        // set buttons
-        ImageButton bmwButton = (ImageButton) findViewById(R.id.bmwButton);
-        bmwButton.setOnClickListener(new View.OnClickListener() {
+    // set buttons
+    public void setRecyclerViewButtons() {
+        Map<String, Integer> imageButtonsMap = new HashMap<>();
+        imageButtonsMap.put("bmw", R.drawable.imagebutton_bmw_selector);
+        imageButtonsMap.put("audi", R.drawable.imagebutton_audi_selector);
+        imageButtonsMap.put("mercedes", R.drawable.imagebutton_mercedes_selector);
+        final String[] keys = imageButtonsMap.keySet().toArray(new String[imageButtonsMap.size()]);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_buttons);
+        mRecyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        final RecyclerView.Adapter recycleButtonsAd = new RecyclerButtonsAdpter(imageButtonsMap, new RecyclerButtonsAdpter.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemClick(View view, int position) {
                 mapFragment.markersFresh();
-                goToResultsLocationByName(v, "bmw");
-                nameBundle = "bmw";
+                goToResultsLocationByName(view, keys[position]);
+                nameBundle = keys[position];
+                Toast.makeText(getApplication(), keys[position], Toast.LENGTH_SHORT).show();
             }
         });
-
-
-        ImageButton audiButton = (ImageButton) findViewById(R.id.audiButton);
-        audiButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mapFragment.markersFresh();
-                goToResultsLocationByName(v, "audi");
-                nameBundle = "audi";
-            }
-        });
-
-
-        ImageButton mercedesButton = (ImageButton) findViewById(R.id.mercedesButton);
-        mercedesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mapFragment.markersFresh();
-                goToResultsLocationByName(v, "mercedes");
-                nameBundle = "mercedes";
-            }
-        });
+        mRecyclerView.setAdapter(recycleButtonsAd);
     }
 
 
-    public void goToResultsLocationByName(View v, String name){
+    public void goToResultsLocationByName(View v, String name) {
 
 
-       new AsyncTask<String,Void,List<DealerModel>>(){
+        new AsyncTask<String, Void, List<DealerModel>>() {
 
-           @Override
-           protected List<DealerModel> doInBackground(String... name) {
-               return dbHelper.fetchDealersByName(name[0]);
+            @Override
+            protected List<DealerModel> doInBackground(String... name) {
+                return dbHelper.fetchDealersByName(name[0]);
 
-           }
+            }
 
-           @Override
-           public void onPostExecute(List<DealerModel> models){
-               if(isMapFragment) {
-                   for (DealerModel model: models){
-                       try {
-                           Log.d("ADDRESS", model.getAddress());
-                           mapFragment.geoLocate(model);
-                       } catch (IOException e) {
-                           e.printStackTrace();
-                       }
-                   }
-               }else {
-                   listFragment.displayListView(models);
-               }
-           }
-       }.execute(name);
+            @Override
+            public void onPostExecute(List<DealerModel> models) {
+                if (isMapFragment) {
+                    for (DealerModel model : models) {
+                        try {
+                            Log.d("ADDRESS", model.getAddress());
+                            mapFragment.geoLocate(model);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    listFragment.displayListView(models);
+                }
+            }
+        }.execute(name);
 
     }
-
 
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
         dbHelper.close();
     }
@@ -229,7 +234,6 @@ public class MainActivity extends AppCompatActivity
         inflater.inflate(R.menu.main, menu);
 
 
-
         return true;
     }
 
@@ -241,7 +245,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
 
-        switch (id){
+        switch (id) {
             case R.id.action_settings:
                 return true;
 
@@ -286,10 +290,9 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     @Override
-    public void GoTo(String address){
-        Toast.makeText(this,"this is a test",Toast.LENGTH_SHORT);
+    public void GoTo(String address) {
+        Toast.makeText(this, "this is a test", Toast.LENGTH_SHORT);
     }
 
     @Override
@@ -297,17 +300,17 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void createData(){
+    private void createData() {
         DealersPullParser parser = new DealersPullParser();
         List<DealerModel> dealers = parser.parseXML(this);
 
-        for( DealerModel dealer: dealers){
+        for (DealerModel dealer : dealers) {
             dbHelper.createDealer(dealer);
         }
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         dbHelper.open();
         Log.d("ONRESUME", "dbHelper re-opened");
