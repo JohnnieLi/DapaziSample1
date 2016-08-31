@@ -18,29 +18,25 @@
         <meta-data
             android:name="android.app.default_searchable"
             android:value=".ottawainfo.SearchableActivity" />
-
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBofrCIOU3Z7Y55gbEr9IAUEk31pWFCMdQ" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-
         <activity
             android:name=".ottawainfo.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
-        </activity>
 
         <activity
             android:name=".ottawainfo.SearchableActivity"
             android:launchMode="singleTop">
-
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
@@ -49,11 +45,7 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-
-
-        <activity android:name=".slidingactivity.SlidingActivity"></activity>
-
-
+        <activity android:name=".slidingactivity.SlidingActivity" />
 
 
         <activity
@@ -61,11 +53,13 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
 
+        <activity android:name=".map.MapActivity"></activity>
     </application>
 
 </manifest>

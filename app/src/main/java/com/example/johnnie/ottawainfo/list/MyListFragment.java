@@ -91,14 +91,11 @@ public class MyListFragment extends Fragment {
 
 
     public void displayListView(List<DealerModel> models){
-
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerView_items);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-
         mAdapter = new RecyclerListAdapter(models);
         mRecyclerView.setAdapter(mAdapter);
-
     }
 }

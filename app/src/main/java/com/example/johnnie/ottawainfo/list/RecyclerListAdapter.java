@@ -62,7 +62,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         DealerModel model = models.get(position);
-
         holder.info.setText(model.getInformation());
         holder.address.setText(model.getAddress());
         holder.faq.setText(model.getFAQ());
@@ -75,4 +74,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     public int getItemCount() {
         return models.size();
     }
+
+
 }

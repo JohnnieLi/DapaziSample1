@@ -1,9 +1,14 @@
 package com.example.johnnie.ottawainfo.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
 /**
  * Created by Johnnie on 2016-08-20.
  */
-public class DealerModel {
+public class DealerModel implements Serializable{
 
     private long dealId;
     private String category;
@@ -70,4 +75,6 @@ public class DealerModel {
                 +"\nAddress: "+address
                 +"\nCall: "+FAQ;
     }
+
+
 }

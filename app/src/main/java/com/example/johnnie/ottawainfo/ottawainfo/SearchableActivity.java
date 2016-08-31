@@ -17,11 +17,12 @@ import com.example.johnnie.ottawainfo.map.MapFragment;
 import com.example.johnnie.ottawainfo.model.DealerModel;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Johnnie on 2016-08-08.
  */
-public class SearchableActivity extends AppCompatActivity implements MapFragment.Callbacks {
+public class SearchableActivity extends AppCompatActivity implements MapFragment.OnMapFragmentClicked {
 
     
     private EditText categoryTextView;
@@ -56,7 +57,9 @@ public class SearchableActivity extends AppCompatActivity implements MapFragment
                         mapFragment.markersFresh();
                         DealerModel temModel = new DealerModel();
                         temModel.setAddress(searchString);
-                        mapFragment.geoLocate(temModel);
+                        ArrayList<DealerModel> models = new ArrayList<DealerModel>();
+                        models.add(temModel);
+                        mapFragment.geoLocate(models);
                         if (getCurrentFocus() != null) {
                             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
@@ -90,7 +93,7 @@ public class SearchableActivity extends AppCompatActivity implements MapFragment
 
 
     @Override
-    public void GoTo(String address) {
+    public void GoToMapActivity() {
 
     }
 }

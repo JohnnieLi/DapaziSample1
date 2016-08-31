@@ -1,8 +1,10 @@
 package com.example.johnnie.ottawainfo.ottawainfo;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,6 +31,7 @@ import android.widget.Toast;
 import com.example.johnnie.ottawainfo.R;
 import com.example.johnnie.ottawainfo.list.MyListFragment;
 import com.example.johnnie.ottawainfo.localdatabase.AutoDealersDbAdapter;
+import com.example.johnnie.ottawainfo.map.MapActivity;
 import com.example.johnnie.ottawainfo.map.MapFragment;
 import com.example.johnnie.ottawainfo.model.DealerModel;
 import com.example.johnnie.ottawainfo.utils.DealersPullParser;
@@ -36,13 +39,14 @@ import com.example.johnnie.ottawainfo.utils.RecyclerButtonsAdpter;
 import com.example.johnnie.ottawainfo.utils.SpinnerAdapter;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MapFragment.Callbacks,
+        implements NavigationView.OnNavigationItemSelectedListener, MapFragment.OnMapFragmentClicked,
         MyListFragment.OnListItemClicked {
 
 
@@ -52,6 +56,8 @@ public class MainActivity extends AppCompatActivity
     private static final int REQUEST_FINE_LOCATION = 0;
     private boolean isMapFragment = true;
     private String nameBundle = " ";
+    private List<DealerModel> mModels;
+
 
 
     @Override
@@ -76,7 +82,7 @@ public class MainActivity extends AppCompatActivity
 
 
         //implement the map
-        mapFragment = MapFragment.newInstance();
+        mapFragment = new MapFragment();
         listFragment = new MyListFragment();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container_map, mapFragment).commit();
@@ -155,6 +161,14 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private void createData() {
+        DealersPullParser parser = new DealersPullParser();
+        List<DealerModel> dealers = parser.parseXML(this);
+        for (DealerModel dealer : dealers) {
+            dbHelper.createDealer(dealer);
+        }
+    }
+
     // set buttons
     public void setRecyclerViewButtons() {
         Map<String, Integer> imageButtonsMap = new HashMap<>();
@@ -192,14 +206,15 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onPostExecute(List<DealerModel> models) {
+                //restore list for mapActivity
+                mModels = models;
+
+                //
                 if (isMapFragment) {
-                    for (DealerModel model : models) {
-                        try {
-                            Log.d("ADDRESS", model.getAddress());
-                            mapFragment.geoLocate(model);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                    try {
+                        mapFragment.geoLocate(models);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 } else {
                     listFragment.displayListView(models);
@@ -247,6 +262,9 @@ public class MainActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.action_settings:
+                Intent intent = new Intent(MainActivity.this, MapActivity.class);
+                intent.putExtra("DealerModels",(Serializable)this.mModels);
+                startActivity(intent);
                 return true;
 
         }
@@ -290,24 +308,23 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+
+    // implement MapFragment.Callbacks
     @Override
-    public void GoTo(String address) {
-        Toast.makeText(this, "this is a test", Toast.LENGTH_SHORT);
+    public void GoToMapActivity() {
+
+        Toast.makeText(this, "this is a test", Toast.LENGTH_SHORT).show();
+        Log.d("GOTOMAPACTIVITY", "call in main activity");
     }
 
+
+    // MyListFragment.OnListItemClicked
     @Override
     public void onListItemClicked() {
 
     }
 
-    private void createData() {
-        DealersPullParser parser = new DealersPullParser();
-        List<DealerModel> dealers = parser.parseXML(this);
 
-        for (DealerModel dealer : dealers) {
-            dbHelper.createDealer(dealer);
-        }
-    }
 
     @Override
     public void onResume() {
@@ -315,5 +332,6 @@ public class MainActivity extends AppCompatActivity
         dbHelper.open();
         Log.d("ONRESUME", "dbHelper re-opened");
     }
+
 
 }

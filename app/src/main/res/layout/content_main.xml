@@ -24,7 +24,9 @@
         android:id="@+id/recyclerView_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="#ffff"
+        android:layout_marginTop="10dp">
 
     </android.support.v7.widget.RecyclerView>
 
@@ -32,7 +34,8 @@
     <FrameLayout
             android:id="@+id/fragment_container_map"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"/>
+            android:layout_height="fill_parent"
+            android:background="#ffff"/>
 
 
 </LinearLayout>
