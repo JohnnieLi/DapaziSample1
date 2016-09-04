@@ -16,8 +16,7 @@ public class DealerModel implements Serializable{
     private String address;
     private String information;
     private String FAQ;
-
-
+    private String imageUri;
 
 
     public long getDealId() {
@@ -66,6 +65,14 @@ public class DealerModel implements Serializable{
 
     public void setFAQ(String FAQ) {
         this.FAQ = FAQ;
+    }
+
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
     }
 
     @Override

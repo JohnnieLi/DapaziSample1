@@ -17,8 +17,17 @@
     <include layout="@layout/search"/>
 
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="My Stuff"
+        android:gravity="center|left"
+        android:textStyle="bold"
+        android:textSize="@dimen/abc_text_size_medium_material"
+        />
+
+
         <!-- Main layout -->
-    <!--<include layout="@layout/image_button_main"/>-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView_buttons"

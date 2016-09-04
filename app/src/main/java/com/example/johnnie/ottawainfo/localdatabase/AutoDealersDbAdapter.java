@@ -24,6 +24,7 @@ public class AutoDealersDbAdapter {
     public static final String KEY_ADDRESS = "address";
     public static final String KEY_INFORMATION = "information";
     public static final String KEY_FQ = "FQ";
+    public static final String KEY_IMG = "imageUri";
 
     private static final String TAG = "AutoDealersDbAdapter";
     private DatabaseHelper mDbHelper;
@@ -42,6 +43,7 @@ public class AutoDealersDbAdapter {
                     KEY_NAME + "," +
                     KEY_ADDRESS + "," +
                     KEY_INFORMATION + "," +
+                    KEY_IMG + "," +
                     KEY_FQ + "," +
                     " UNIQUE (" + KEY_ROWID +"));";
 
@@ -92,22 +94,10 @@ public class AutoDealersDbAdapter {
         initialValues.put(KEY_INFORMATION, model.getInformation());
         initialValues.put(KEY_CATEGORY, model.getCategory());
         initialValues.put(KEY_FQ,model.getFAQ());
-
+        initialValues.put(KEY_IMG,model.getImageUri());
         return mDb.insert(SQLITE_TABLE, null, initialValues);
     }
 
-//    public long createDealer(String category, String name,
-//                              String address, String information, String fQ) {
-//
-//        ContentValues initialValues = new ContentValues();
-//        initialValues.put(KEY_ADDRESS, address);
-//        initialValues.put(KEY_NAME, name);
-//        initialValues.put(KEY_INFORMATION, information);
-//        initialValues.put(KEY_CATEGORY, category);
-//        initialValues.put(KEY_FQ,fQ);
-//
-//        return mDb.insert(SQLITE_TABLE, null, initialValues);
-//    }
 
     public boolean deleteAllDealers() {
 
@@ -146,13 +136,13 @@ public class AutoDealersDbAdapter {
         Cursor mCursor;
         if (inputText == null  ||  inputText.length () == 0)  {
             mCursor = mDb.query(SQLITE_TABLE, new String[] {KEY_ROWID,
-                            KEY_CATEGORY,KEY_ADDRESS, KEY_NAME, KEY_INFORMATION,KEY_FQ},
+                            KEY_CATEGORY,KEY_ADDRESS, KEY_NAME, KEY_INFORMATION,KEY_FQ,KEY_IMG},
                     null, null, null, null, null);
 
         }
         else {
             mCursor = mDb.query(true, SQLITE_TABLE, new String[] {KEY_ROWID,
-                            KEY_CATEGORY,KEY_ADDRESS, KEY_NAME, KEY_INFORMATION,KEY_FQ},
+                            KEY_CATEGORY,KEY_ADDRESS, KEY_NAME, KEY_INFORMATION,KEY_FQ,KEY_IMG},
                     KEY_NAME + " like '%" + inputText + "%'", null,
                     null, null, null, null);
         }
@@ -165,6 +155,7 @@ public class AutoDealersDbAdapter {
                 model.setInformation(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_INFORMATION)));
                 model.setFAQ(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_FQ)));
                 model.setDealId(mCursor.getLong(mCursor.getColumnIndexOrThrow(KEY_ROWID)));
+                model.setImageUri(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_IMG)));
                 models.add(model);
             }
         }
@@ -176,7 +167,7 @@ public class AutoDealersDbAdapter {
         List<DealerModel> models = new ArrayList<>();
 
         Cursor mCursor = mDb.query(SQLITE_TABLE, new String[] {KEY_ROWID,
-                        KEY_CATEGORY,KEY_ADDRESS, KEY_NAME, KEY_INFORMATION,KEY_FQ},
+                        KEY_CATEGORY,KEY_ADDRESS, KEY_NAME, KEY_INFORMATION,KEY_FQ,KEY_IMG},
                 null, null, null, null, null);
         Log.i(TAG,"Returned "+mCursor.getCount()+ " rows");
 
@@ -189,53 +180,12 @@ public class AutoDealersDbAdapter {
                 model.setInformation(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_INFORMATION)));
                 model.setFAQ(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_FQ)));
                 model.setDealId(mCursor.getLong(mCursor.getColumnIndexOrThrow(KEY_ROWID)));
+                model.setImageUri(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_IMG)));
                 models.add(model);
             }
         }
         return models;
     }
 
-
-//    public  void insertSomeDealers() {
-//        DealerModel dealerModel = new DealerModel();
-//        dealerModel.setAddress("835 Carling Ave,Ottawa");
-//        dealerModel.setCategory("dealer");
-//        dealerModel.setName("bmw");
-//        dealerModel.setInformation("Otto's BMW");
-//        dealerModel.setFAQ("844-267-4826");
-//        createDealer(dealerModel);
-//
-//        dealerModel = new DealerModel();
-//        dealerModel.setAddress("1040 Ogilvie Rd, Gloucester, ON K1J 7T3");
-//        dealerModel.setCategory("dealer");
-//        dealerModel.setName("bmw");
-//        dealerModel.setInformation("Elite BMW");
-//        dealerModel.setFAQ("844-267-4826");
-//        createDealer(dealerModel);
-//
-//        dealerModel = new DealerModel();
-//        dealerModel.setAddress("295 West Hunt Club Rd,Ottawa");
-//        dealerModel.setCategory("dealer");
-//        dealerModel.setName("audi");
-//        dealerModel.setInformation("Mark Motors of Ottawa");
-//        dealerModel.setFAQ("(613) 723-1221");
-//        createDealer(dealerModel);
-//
-//        dealerModel = new DealerModel();
-//        dealerModel.setAddress("1040 Ogilvie Rd, Gloucester, ON K1J 7T3");
-//        dealerModel.setCategory("dealer");
-//        dealerModel.setName("audi");
-//        dealerModel.setInformation("Mark Motors of Ottawa");
-//        dealerModel.setFAQ("(613) 746-3533");
-//        createDealer(dealerModel);
-//
-//        dealerModel = new DealerModel();
-//        dealerModel.setAddress("400 Hunt Club Rd, ottawa");
-//        dealerModel.setCategory("dealer");
-//        dealerModel.setName("mercedes");
-//        dealerModel.setInformation("Star Motors of Ottawa");
-//        dealerModel.setFAQ("(613) 737-7827");
-//        createDealer(dealerModel);
-//    }
 
 }

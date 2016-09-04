@@ -8,6 +8,7 @@
         <name>bmw</name>
         <information>Otto's BMW</information>
         <faq>844-267-4826</faq>
+        <imageUri>http://ottosplanet.com/images/main_bmw.png</imageUri>
     </dealer>
 
 
@@ -17,10 +18,11 @@
         <name>bmw</name>
         <information>Elite BMW</information>
         <faq>844-267-4826</faq>
+        <imageUri>http://cdn-user.dealerrater.com/uimages/31872/main-31872-bb963cf239c0_large.jpg</imageUri>
     </dealer>
 
 
-
+    <!--todo:change imageUri for others-->
     <!-- +++++++++++Audi Dealers++++++++++++++++++++ -->
     <dealer>
         <address> 295 West Hunt Club Rd,Ottawa </address>
@@ -28,6 +30,7 @@
         <name>audi</name>
         <information>Mark Motors of Ottawa</information>
         <faq>(613) 723-1221</faq>
+        <imageUri>http://audi.markmotorsofottawa.com/content/uploads/sites/5/2015/08/MM-Audi-Coming-Soon-1500x500.jpg</imageUri>
     </dealer>
 
     <dealer>
@@ -36,6 +39,7 @@
         <name>audi</name>
         <information>Mark Motors of Ottawa</information>
         <faq>(613) 746-3533</faq>
+        <imageUri>http://audi.markmotorsofottawa.com/content/uploads/sites/5/2014/04/mm_sliders.jpg</imageUri>
     </dealer>
 
 
@@ -45,6 +49,7 @@
     <name>audi</name>
     <information>Mark Motors of Ottawa</information>
     <faq>(613) 749-4275</faq>
+        <imageUri>https://markmotorsporsche.com/images/dealer_images/676/banners/homepage/256d9a8226a6e06be2a5f6b4aea37e66.jpg</imageUri>
     </dealer>
 
 
@@ -55,6 +60,7 @@
         <name>mercedes</name>
         <information>Star Motors of Ottawa</information>
         <faq>(613) 737-7827</faq>
+        <imageUri>https://starmotors.mercedes-benz-vans.ca/images/promos/contact-info/36-en.jpg?1425253651</imageUri>
     </dealer>
 
 
@@ -64,6 +70,7 @@
         <name>mercedes</name>
         <information>Mercedes-Benz Gatineau</information>
         <faq>(613) 745-9000</faq>
+        <imageUri>http://cdn-user.dealerrater.com/uimages/33553/main-33553-d0c01a7b23be.jpg</imageUri>
     </dealer>
 </dealers>
 

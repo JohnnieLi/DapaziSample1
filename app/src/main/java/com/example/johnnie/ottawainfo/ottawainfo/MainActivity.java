@@ -167,6 +167,7 @@ public class MainActivity extends AppCompatActivity
         for (DealerModel dealer : dealers) {
             dbHelper.createDealer(dealer);
         }
+
     }
 
     // set buttons
@@ -208,7 +209,7 @@ public class MainActivity extends AppCompatActivity
             public void onPostExecute(List<DealerModel> models) {
                 //restore list for mapActivity
                 mModels = models;
-
+               //Log.d("MAINACTIVITY",models.get(0).getAddress());
                 //
                 if (isMapFragment) {
                     try {

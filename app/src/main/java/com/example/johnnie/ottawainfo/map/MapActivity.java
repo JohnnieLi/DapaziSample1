@@ -10,6 +10,7 @@ import android.support.v7.widget.SnapHelper;
 import android.view.View;
 import android.widget.Toast;
 
+
 import com.example.johnnie.ottawainfo.R;
 import com.example.johnnie.ottawainfo.list.RecyclerListAdapter;
 import com.example.johnnie.ottawainfo.model.DealerModel;

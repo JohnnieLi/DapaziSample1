@@ -27,6 +27,7 @@ public class DealersPullParser {
     private static final String DEALER_NAME = "name";
     private static final String DEALER_INFO = "information";
     private static final String DEALER_FAQ = "faq";
+    private static final String DEALER_IMG = "imageUri";
 
     private DealerModel currentDealer = null;
     private String currentTag = null;
@@ -80,6 +81,8 @@ public class DealersPullParser {
                 currentDealer.setInformation(xmlText);
             }else if(currentTag.equals(DEALER_FAQ)){
                 currentDealer.setFAQ(xmlText);
+            }else if(currentTag.equals(DEALER_IMG)){
+                currentDealer.setImageUri(xmlText);
             }
         }
     }
