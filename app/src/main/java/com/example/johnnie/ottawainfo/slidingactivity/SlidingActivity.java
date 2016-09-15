@@ -77,7 +77,7 @@ public class SlidingActivity extends ActionBarActivity
 
 
         //configureToolbar();
-        configureDrawer();
+        //configureDrawer();
     }
 
 //    private void configureToolbar() {
@@ -99,32 +99,32 @@ public class SlidingActivity extends ActionBarActivity
 //        });
 //    }
 
-    private void configureDrawer() {
-        // Configure drawer
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.string.drawer_open,
-                R.string.drawer_closed) {
-
-            public void onDrawerClosed(View view) {
-                supportInvalidateOptionsMenu();
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                supportInvalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-    }
+//    private void configureDrawer() {
+//        // Configure drawer
+//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+//
+//        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+//                R.string.drawer_open,
+//                R.string.drawer_closed) {
+//
+//            public void onDrawerClosed(View view) {
+//                supportInvalidateOptionsMenu();
+//            }
+//
+//            public void onDrawerOpened(View drawerView) {
+//                supportInvalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+//            }
+//        };
+//
+//        mDrawerLayout.setDrawerListener(mDrawerToggle);
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
+//        if (mDrawerToggle.onOptionsItemSelected(item)) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -132,13 +132,13 @@ public class SlidingActivity extends ActionBarActivity
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+       // mDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+       // mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
